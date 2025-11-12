@@ -1,90 +1,82 @@
 pipeline {
 
     agent any
+ 
+    tools {
 
-    environment {
-
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') // ID from Jenkins
-
-        DOCKER_IMAGE = "your_dockerhub_username/my-java-app"
+        maven 'Maven'
 
     }
+ 
+    environment {
 
+        // This line is where the error happens.
+
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+
+        DOCKER_IMAGE_NAME = "kasthourirangane/devops-java-image" // Ensure this is your correct Docker Hub username
+
+        DOCKER_IMAGE_TAG  = "latest"
+
+    }
+ 
     stages {
-
-        stage('Checkout') {
-
-            steps {
-
-                echo 'Cloning GitHub Repository...'
-
-                git branch: 'main', url: 'https://github.com/yourusername/yourrepo.git'
-
-            }
-
-        }
 
         stage('Build with Maven') {
 
             steps {
 
-                echo 'Building application with Maven...'
-
-                sh 'mvn clean install'
+                sh 'mvn clean package'
 
             }
 
         }
-
+ 
         stage('Build Docker Image') {
 
             steps {
 
-                echo 'Building Docker Image...'
+                script {
 
-                sh 'docker build -t ${DOCKER_IMAGE}:latest .'
+                    docker.build(DOCKER_IMAGE_NAME, ".")
+
+                }
 
             }
 
         }
+ 
+        // <<< THIS IS THE CRITICAL NEW STAGE >>>
 
-        stage('Login to Docker Hub') {
+        stage('Debug Credentials') {
 
             steps {
 
-                echo 'Logging in to Docker Hub...'
+                // This will ONLY work if the credential is a 'Username with password' type.
 
-                sh 'echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin'
+                // The pipeline automatically provides _USR and _PSW variables.
+
+                sh 'echo "DEBUG: Successfully found the credential. Username is: ${DOCKERHUB_CREDENTIALS_USR}"'
 
             }
 
         }
-
+ 
         stage('Push Docker Image') {
 
             steps {
 
-                echo 'Pushing Docker Image to Docker Hub...'
+                script {
 
-                sh 'docker push ${DOCKER_IMAGE}:latest'
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials') {
+
+                        docker.image(DOCKER_IMAGE_NAME).push(DOCKER_IMAGE_TAG)
+
+                    }
+
+                }
 
             }
-
-        }
-
-    }
-
-    post {
-
-        success {
-
-            echo ' Build and Push Successful!'
-
-        }
-
-        failure {
-
-            echo ' Build Failed!'
 
         }
 
