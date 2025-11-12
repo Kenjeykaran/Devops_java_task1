@@ -1,4 +1,11 @@
-FROM openjdk:17-jdk-slim
-WORKDIR /app
-COPY target/Devops_java_task1-1.0.0.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+FROM eclipse-temurin:17-jdk-jammy
+ 
+VOLUME /tmp
+ 
+EXPOSE 8080
+ 
+ARG JAR_FILE=target/*.jar
+ 
+ADD ${JAR_FILE} app.jar
+ 
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
