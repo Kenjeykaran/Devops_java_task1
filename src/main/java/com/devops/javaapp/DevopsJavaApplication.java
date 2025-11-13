@@ -1,5 +1,3 @@
-src/main/java/com/devops/javaapp/DevopsJavaApplication.java:
- 
 package com.devops.javaapp;
  
 import org.springframework.boot.SpringApplication;
