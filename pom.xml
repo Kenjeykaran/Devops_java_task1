@@ -24,6 +24,13 @@
 <groupId>org.springframework.boot</groupId>
 <artifactId>spring-boot-starter-web</artifactId>
 </dependency>
+ 
+        <!-- Dependency for testing, good practice to include -->
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-test</artifactId>
+<scope>test</scope>
+</dependency>
 <dependency>
 <groupId>org.springframework.boot</groupId>
 <artifactId>spring-boot-starter-actuator</artifactId>
@@ -32,15 +39,3 @@
 <groupId>io.micrometer</groupId>
 <artifactId>micrometer-registry-prometheus</artifactId>
 </dependency>
-<!-- Dependency for testing, good practice to include -->
-<dependency>
-<groupId>org.springframework.boot</groupId>
-<artifactId>spring-boot-starter-test</artifactId>
-<scope>test</scope>
-</dependency>
-</dependencies>
- 
-    <build>
-<plugins>
-<!-- This plugin packages the application into an executable JAR file -->
-<plugin>
