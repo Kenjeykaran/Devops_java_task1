@@ -79,6 +79,15 @@ pipeline {
             }
 
         }
+/// Deployement of the ansible for auto dockerf image
+	stage('Deploy with Ansible') {
+    steps {
+        sshagent(credentials: ['devops-key']) {
+            sh 'export ANSIBLE_HOST_KEY_CHECKING=False && ansible-playbook -i inventory playbook.yml'
+        }
+    }
+}
+// it ends here
 
     }
 
