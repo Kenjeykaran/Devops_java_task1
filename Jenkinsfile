@@ -14,7 +14,7 @@ pipeline {
 
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
 
-        DOCKER_IMAGE_NAME = "kasthourirangane/devops-java-image" // Ensure this is your correct Docker Hub username
+        DOCKER_IMAGE_NAME = "kasthourirangane/devops-java-image" // Docker Image name from the Docker sitej
 
         DOCKER_IMAGE_TAG  = "latest"
 
