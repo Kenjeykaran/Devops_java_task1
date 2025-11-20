@@ -1,5 +1,5 @@
 [appserver]
 # We will replace this placeholder later with the real IP address
 # of the EC2 instance we create in the next section.
-51.20.190.117 ansible_user=ubuntu ansible_private_key_file=/home/kasth/.ssh/devops-key.pem
+51.20.190.117 ansible_user=ubuntu
 
